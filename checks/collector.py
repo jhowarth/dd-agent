@@ -767,6 +767,11 @@ class Collector(object):
         if host_aliases:
             metadata['host_aliases'] += host_aliases
 
+        # Try to get Azure VM ID
+        host_aliases = Azure.get_host_aliases(self.agentConfig)
+        if host_aliases:
+            metadata['host_aliases'] += host_aliases
+
         try:
             metadata["host_aliases"] += CloudFoundry.get_host_aliases(self.agentConfig)
         except Exception:
