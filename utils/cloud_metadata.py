@@ -60,10 +60,11 @@ class GCE(object):
             host_metadata = GCE._get_metadata(agentConfig)
             tags = []
 
-            for key, value in host_metadata['instance'].get('attributes', {}).iteritems():
-                if key in GCE.EXCLUDED_ATTRIBUTES:
-                    continue
-                tags.append("%s:%s" % (key, value))
+            if agentConfig.get('collect_instance_metadata_attributes', True):
+                for key, value in host_metadata['instance'].get('attributes', {}).iteritems():
+                    if key in GCE.EXCLUDED_ATTRIBUTES:
+                        continue
+                    tags.append("%s:%s" % (key, value))
 
             tags.extend(host_metadata['instance'].get('tags', []))
             tags.append('zone:%s' % host_metadata['instance']['zone'].split('/')[-1])
